@@ -33,6 +33,12 @@ io.on('connection', function(socket) {
     }
   });
 
+  socket.on('current_count', function() {
+    console.log("We've got one, Larry!");
+    console.log('Send em the counter:', counter);
+    socket.emit('update_count', counter);
+  });
+
   socket.on('click', function(data) {
     console.log(data);
   });

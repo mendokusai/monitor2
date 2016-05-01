@@ -1,5 +1,5 @@
 // document.write('shit yes');
-require('./hello.js');
+require('./monitor_interface.js');
 require("./stylesheets/style.css");
 require('./content.js');
 require('./client.js');
