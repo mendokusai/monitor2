@@ -4,13 +4,14 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
 var path = require('path');
+var port = process.argv[2] || 3000;
 
-var port = process.argv[2] || 4000;
-
-app.use(express.static('stream'));
+app.use('/client', express.static(__dirname + '/client'));
+app.use('/stream', express.static(__dirname + '/stream'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/client/index.html');
 });
 
 var sockets = {};

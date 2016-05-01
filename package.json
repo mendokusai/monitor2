@@ -9,8 +9,19 @@
   "author": "ryan",
   "license": "MIT",
   "dependencies": {
+    "bootstrap-sass": "^3.3.6",
     "express": "^4.13.4",
     "nodemon": "^1.9.1",
-    "socket.io": "^1.4.5"
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "socket.io": "^1.4.5",
+    "socket.io-stream": "^0.9.0",
+    "webpack": "^1.13.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.7.7",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0"
   }
 }

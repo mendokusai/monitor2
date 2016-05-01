@@ -20,8 +20,14 @@
     <!-- Bootstrap JavaScript -->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <!-- React
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.2/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script> -->
     <script>
       var counter;
+      var socket = io();
+
       $(function() {
         counter = 0;
         $('#image').text(counter);
@@ -50,8 +56,6 @@
         $('#image').text(counter);
       }
 
-      var socket = io();
-
       socket.on('update_count', function(data) {
         updateCounter(counter, data);
         console.log('added to counter')
@@ -61,10 +65,17 @@
 <body class="container">
   <h1 class="text-center">Monitor 2</h1>
   <h4 class="text-center">A New Hope</h4>
-  <div class="container" id="image"></div>
+  <div class="container">
+    <img src="/stream/01.png"/>
+  </div>
+  <div class="container">
+    <span>Counter: </span><span id="image"></span>
+  </div>
   <button class="btn btn-info" onclick="clickCounter()">Counter</button>
   <button class="btn btn-info" onclick="clickAy()">AY</button>
   <button class="btn btn-info" onclick="clickBee()">BEE</button>
-
+  <div class="container" id="hi">YO</div>
+  <!-- webpack bundle -->
+  <script src="client/bundle.js" charset="utf-8"></script>
 </body>
 </html>
