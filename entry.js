@@ -1,5 +1,3 @@
-// document.write('shit yes');
+// bundle.js entry point
 require('./monitor_interface.js');
 require("./stylesheets/style.css");
-require('./content.js');
-require('./client.js');
