@@ -6,10 +6,8 @@ var socket = io();
 
 var MonitorInterface = React.createClass({
   getInitialState: function() {
-    socket.emit('current_count');
     return { 
-      count: 0,
-      image: "/stream/01.png",
+      image: "/stream/photo01.png",
       on: false
     };
   },
@@ -19,17 +17,9 @@ var MonitorInterface = React.createClass({
     socket.on('next_photo', this._updatePhoto);
   },
 
-  increaseCount: function() {
-    socket.emit('count');
-  },
-
   _updatePhoto(url) {
-    this.setState({ image: url });
-  },
-
-  _updateCounter(data) {
-    this.setState({ count: parseInt(data) });
-
+    var img_url = "/stream/" + url;
+    this.setState({ image: img_url });
   },
 
   startCamera: function() {
@@ -46,19 +36,18 @@ var MonitorInterface = React.createClass({
     }
   },
 
-  clickAye: function() {
-    socket.emit('click', 'A');
-  },
+  photoCollection: function() {
+    return(
+      <div className="top-photo container">
+        <img src={this.state.image}/>
+      </div>
 
-  clickBee: function() {
-    socket.emit('click', 'B');
-  },
+    );
+  }
 
   render: function() {
     return(
       <div className="container">
-        <img src={this.state.image}/>
-        <hr/>
         Camera:
         <button
           className="btn btn-info"
@@ -68,21 +57,10 @@ var MonitorInterface = React.createClass({
           className="btn btn-info"
           onClick={this.stopCamera}>Stop
         </button>
-        <div onChange={this._updateCounter}>
-          Counter: {this.state.count}
+        <hr/>
+        <div className="container">
+          <img src={this.state.image}/>
         </div>
-        <button
-          className="btn btn-danger"
-          onClick={this.increaseCount}>Counter
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={this.clickAye}>AYE
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={this.clickBee}>BEE
-        </button>
       </div>
     );
   }

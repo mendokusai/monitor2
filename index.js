@@ -9,29 +9,32 @@ var port = process.argv[2] || 3000;
 
 app.use('/client', express.static(__dirname + '/client'));
 app.use('/stream', express.static(__dirname + '/stream'));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/stream'));
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/client/index.html');
 });
 
+app.get('/stream/*', function(req, res) {
+  var img_src = req.url;
+  res.sendFile(path.resolve(path.resolve(__dirname, img_src)));
+});
+
 var sockets = {};
-var counter = 0;
 
 var camOpts = {
+  // must haves
+  "mode": "timelapse",
+  "output": __dirname + "/stream/photo%0d.png",
   // optional
   "w": "500",
   "h": "500",
   "e": "png",
-  "tl": "500",
+  "tl": "1000",
   "ex": "night"
 };
 
-var camera = new RaspiCam(
-  "timelapse",
-  __dirname + "/stream/photo%d.png",
-  {camOpts}
-);
+var camera = new RaspiCam(camOpts);
 
 http.listen(port, function(){
   console.log("You're tuned to port " + port);
@@ -40,13 +43,10 @@ http.listen(port, function(){
 io.on('connection', function(socket) {
   sockets[socket.id] = socket;
   console.log('Connected: ', Object.keys(sockets).length);
-  io.emit('update_count', counter);
   socket.on('disconnect', function() {
     delete sockets[socket.id];
     if (Object.keys(sockets).length === 0) {
       console.log("shut it down.");
-      counter = 0;
-      console.log('counter reset: ', counter);
     } else {
       console.log('someone left.');
       console.log('Connected: ', Object.keys(sockets).length);
@@ -56,13 +56,10 @@ io.on('connection', function(socket) {
   socket.on('start_cam', function() {
     console.log('starting camera!');
     camera.start();
-    // var arrayOfFiles = fs.readdir('./stream/', function(err, files) {
-    //   if (err) throw err;
-    //   files.forEach( function(file) {
-    //     var url = "/stream/" + file;
-    //     socket.emit('next_photo', url);
-    //   });
-    // });
+  });
+
+  socket.on('error', function(e){
+    console.log("Borken socket: ", e);
   });
 
   socket.on('stop_cam', function() {
@@ -72,7 +69,7 @@ io.on('connection', function(socket) {
 
   camera.on('read', function(err, timestamp, filename) {
     if (err) {
-      console.log("Error! ", err);
+      console.log("Critical error! ", err);
       camera.stop();
     } else {
       console.log('sending photo!');
@@ -85,22 +82,8 @@ io.on('connection', function(socket) {
     rmDir('/stream', false);
   });
 
-  // Counter and button checks
-  socket.on('current_count', function() {
-    console.log("We've got one, Larry!");
-    console.log('Send em the counter:', counter);
-    socket.emit('update_count', counter);
-  });
-
-  socket.on('click', function(data) {
-    console.log(data);
-  });
-
-  socket.on('count', function(data) {
-    console.log('before: ', counter);
-    counter ++;
-    console.log('counter up one: ', counter);
-    io.emit('update_count', counter);
+  camera.on('exit', function() {
+    console.log("PING! Done!");
   });
 });
 
