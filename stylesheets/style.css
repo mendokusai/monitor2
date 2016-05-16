@@ -8,3 +8,24 @@ body {
   display: block;
   margin-top: 20px;
 }
+
+.top{
+  position: relative;
+  z-index: 1;
+
+}
+
+.old {
+  position: relative;
+  top: 50px;
+  left: 50px;
+}
+
+.top-photo {
+  position: absolute;
+  z-index: 1;
+}
+
+.old-photo {
+  position: absolute;
+}
