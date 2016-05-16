@@ -121,13 +121,17 @@ var MonitorInterface = React.createClass({
     );
   }
 });
-
-var old_images = [
-  "/stream/02.png",
-  "/stream/03.png",
-  "/stream/04.png",
-  "/stream/05.png",
-  "/stream/06.png",
-  "/stream/07.png",
-];
-ReactDOM.render(<MonitorInterface oldImages ={old_images}/>, document.getElementById('interface'));
+// test array for non-pi trials.
+// uses oldImages as a prop
+//
+// var old_images = [
+//   "/stream/02.png",
+//   "/stream/03.png",
+//   "/stream/04.png",
+//   "/stream/05.png",
+//   "/stream/06.png",
+//   "/stream/07.png",
+// ];
+ReactDOM.render(<MonitorInterface />,
+  document.getElementById('interface')
+);
